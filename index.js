@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express();
 
 app.use(cors());
@@ -28,18 +28,45 @@ async function run() {
 
     const brandCollection = client.db("brandDB").collection("brands");
 
-    app.post("/brands", async(req, res) => {
-      const user = req.body; 
-      const result = await brandCollection.insertOne(user);
-      console.log(result);
+    app.get("/brands", async(req, res) => {
+      const result = await brandCollection.find().toArray();
       res.send(result);
-    });
+    })
 
-
-  app.get("/brands", async(req, res) => {
-    const result = await brandCollection.find().toArray();
+// get single data using id 
+  app.get('/brands/:id', async(req, res) => {
+     const id = req.params.id;
+     const query = {_id : new ObjectId(id)};
+     const result = await brandCollection.findOne(query);
+     res.send(result);
+  })
+  // post data 
+  app.post("/brands", async(req, res) => {
+    const user = req.body; 
+    const result = await brandCollection.insertOne(user);
     res.send(result);
   })
+  
+  app.put('/brands/:id', async(req, res) => {
+    const id = req.params.id;
+    const filter = {_id: new ObjectId(id)};
+    const options = { upsert: true };
+    const updatedBrand = req.body;
+    const brand = {
+      $set: {
+        img: updatedBrand.img,
+        name: updatedBrand.name,
+        brand_name: updatedBrand.brand_name,
+        type: updatedBrand.type,
+        price: updatedBrand.price,
+        rating: updatedBrand.rating
+      }
+    };
+    const result = await brandCollection.updateOne(filter, brand, options);
+    res.send(result);
+  })
+// get user 
+ 
 
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");

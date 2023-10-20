@@ -8,10 +8,6 @@ app.use(express.json());
 
 const port = process.env.PORT || 5001;
 
-// BrandStore-server 
-// YBZ9sxtxYaTXxcEf 
-
-
 const uri = "mongodb+srv://BrandStore-server:YBZ9sxtxYaTXxcEf@cluster0.fobkzbd.mongodb.net/?retryWrites=true&w=majority";
 
 const client = new MongoClient(uri, {
@@ -24,9 +20,9 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    await client.connect();
+        // await client.connect();
 
-    const brandCollection = client.db("brandDB").collection("brands");
+     const brandCollection = client.db("brandDB").collection("brands");
 
     app.get("/brands", async(req, res) => {
       const result = await brandCollection.find().toArray();
@@ -67,7 +63,7 @@ async function run() {
   })
 
 // add to cart 
-  const cartCollection = client.db("brandDB").collection("carts");
+     const cartCollection = client.db("brandDB").collection("carts");
 
 app.get('/carts', async(req, res) => {
   const cursor = cartCollection.find();
@@ -103,11 +99,6 @@ app.delete('/carts/:id', async(req, res) => {
 
   
 })
-
-
-// get user 
- 
-
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
@@ -115,8 +106,6 @@ app.delete('/carts/:id', async(req, res) => {
   }
 }
 run().catch(console.dir);
-
-
 
 app.get('/', (req, res) => {
     res.send('Crud is running....')

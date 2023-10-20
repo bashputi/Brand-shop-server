@@ -65,6 +65,28 @@ async function run() {
     const result = await brandCollection.updateOne(filter, brand, options);
     res.send(result);
   })
+
+// add to cart 
+  const cartCollection = client.db("brandDB").collection("carts");
+
+app.get('/carts', async(req, res) => {
+  const cursor = cartCollection.find();
+  const result = await cursor.toArray();
+  res.send(result);
+})
+
+app.post('/carts', async(req, res) => {
+  const details = req.body;
+
+  const result = await cartCollection.insertOne(details);
+  res.send(result);
+})
+// app.post("/", async(req, res) => {
+//   const users = req.body; 
+//   const result = await brandCollection.insertOne(users);
+//   res.send(result);
+// })
+
 // get user 
  
 

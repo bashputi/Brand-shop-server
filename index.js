@@ -75,17 +75,35 @@ app.get('/carts', async(req, res) => {
   res.send(result);
 })
 
+// app.get('/myCart/:email', async(req,res) => {
+//   const userEmail = req.params.email;
+//   console.log(userEmail)
+//   const query = {email: userEmail};
+//   const result =await cartCollection.find(query).toArray();
+// console.log(result)
+//   res.send(result)
+// })
+
 app.post('/carts', async(req, res) => {
   const details = req.body;
-
   const result = await cartCollection.insertOne(details);
   res.send(result);
 })
-// app.post("/", async(req, res) => {
-//   const users = req.body; 
-//   const result = await brandCollection.insertOne(users);
-//   res.send(result);
-// })
+
+app.delete('/carts/:id', async(req, res) => {
+  const id = req.params.id;
+  console.log(id)
+  const query = {
+    _id : new ObjectId(id),
+};
+  console.log(query);
+  const result = await cartCollection.deleteOne(query);
+  console.log(result);
+  res.send(result);
+
+  
+})
+
 
 // get user 
  

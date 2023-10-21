@@ -71,14 +71,14 @@ app.get('/carts', async(req, res) => {
   res.send(result);
 })
 
-// app.get('/myCart/:email', async(req,res) => {
-//   const userEmail = req.params.email;
-//   console.log(userEmail)
-//   const query = {email: userEmail};
-//   const result =await cartCollection.find(query).toArray();
-// console.log(result)
-//   res.send(result)
-// })
+app.get('/myCart/:email', async(req,res) => {
+  const userEmail = req.params.email;
+  console.log(userEmail)
+  const query = {email: userEmail};
+  const result =await cartCollection.find(query).toArray();
+console.log(result)
+  res.send(result)
+})
 
 app.post('/carts', async(req, res) => {
   const details = req.body;
